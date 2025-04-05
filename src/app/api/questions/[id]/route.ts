@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 // 根据ID查询题目
-export async function GET(_: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = await params;
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> } ) {
+  const id = (await params).id;
 
   const { data, error } = await supabase
     .from('interview_questions')
@@ -19,8 +19,8 @@ export async function GET(_: NextRequest, { params }: { params: { id: string } }
 }
 
 // 根据ID修改题目内容
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id;
   const { content, source } = await req.json();
 
   if (!content) {
@@ -42,8 +42,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // 根据ID删除题目
-export async function DELETE(_: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id;
 
   const { error } = await supabase
     .from('interview_questions')
